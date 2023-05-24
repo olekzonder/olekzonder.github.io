@@ -13,4 +13,5 @@ listing:
     sort: 
     - "date"
     - "title desc"
+    fields: [date, title]
 ---
