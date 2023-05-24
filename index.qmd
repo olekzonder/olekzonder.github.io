@@ -9,5 +9,8 @@ title: "Персональный сайт Александра Смирнова"
 ---
 listing:
     contents: posts
-    type: default
+    type: grid
+    sort: 
+    - "date"
+    - "title desc"
 ---

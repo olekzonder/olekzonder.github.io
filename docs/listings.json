@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/astra-docker.html",
       "/posts/phdays.html"
     ]
   }

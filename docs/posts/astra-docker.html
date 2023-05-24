@@ -8,7 +8,7 @@
 
 <meta name="author" content="Александр Смирнов">
 
-<title>Александр Смирнов - PHDays 12</title>
+<title>Александр Смирнов - Создание Docker образа Astra Linux</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -106,7 +140,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">PHDays 12</h1>
+<h1 class="title">Создание Docker образа Astra Linux</h1>
 </div>
 
 
@@ -127,16 +161,44 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p><img src="phdays/phdays.svg" class="img-fluid"></p>
-<p>Компания Positive Technologies, лидер в области результативной кибербезопасности, проводит Positive Hack Days уже в 12-й раз. В этом году мероприятие впервые проходит в одном из самых популярных парков Москвы — Парке Горького — и предназначено не только для профессионального сообщества, но и для широкой аудитории. В условиях повсеместной цифровизации кибербезопасность касается каждого человека, и PHDays предлагает ближе познакомиться с новыми технологиями, научиться их контролировать и избегать киберугроз.</p>
-<p>В Парке Горького построен настоящий кибергород, любой посетитель которого может совершенно бесплатно поучаствовать в квестах и в итоге получить знания о киберзащищенности. Во второй масштабной локации — на территории безопасности, располагающейся на набережной и объединяющей пять технических треков и бизнес-программу, — уже прошли десятки профессиональных выступлений (всего их будет более 200). В пленарной сессии принял участие министр цифрового развития, связи и массовых коммуникаций Максут Шадаев.</p>
-<p>Киберфестиваль продолжается, впереди самое интересное, а пока представляем краткий дайджест событий первого дня. За выступлениями и соревнованиями также можно наблюдать онлайн на <a href="https://phdays.com/">сайте PHDays</a>.</p>
-<p>Открыл мероприятие Денис Баранов, генеральный директор Positive Technologies:</p>
-<blockquote class="blockquote">
-<p>В России есть огромная и развитая сфера IT: люди пользуются цифровыми банками и вызывают такси со смартфона. Рядом с ней есть отрасль кибербезопасности — высокотехнологичная, очень интересная, со своими вызовами. Хакеры чуть ли не ежедневно атакуют компании, пользователей, поезда, заводы, и героические ребята с другой стороны баррикад защищают цифровые системы для того, чтобы современная цивилизация не была уничтожена. Мы решили выйти в Парк Горького, чтобы немного поделиться кулуарным миром ИБ, а пользователи, далекие от этой сферы, могли, как в щелочку, на него посмотреть. – <cite> Денис Баранов </cite></p>
-</blockquote>
+<p><img src="astra-docker/logo.png" class="img-fluid"></p>
+<p>Образ дистрибутива Astra Linux, как и любого дистрибутива, основанного на Debian, создаётся в три этапа:</p>
+<p>1)Выполняется сборка chroot-окружения с помощью debootstrap;</p>
+<p>2)Выполняется настройка chroot-окружения;</p>
+<p>3)Полученное chroot-окружение конвертируется в образ Docker.</p>
+<section id="сборка-chroot-окружения" class="level2">
+<h2 class="anchored" data-anchor-id="сборка-chroot-окружения">Сборка chroot-окружения</h2>
+<p>Сборка производится с помощью команды debootstrap:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">debootstrap</span> <span class="at">--variant</span><span class="op">=</span>minbase <span class="at">--include</span> locales,lsb-release <span class="at">--components</span><span class="op">=</span>main,contrib,non-free orel /var/astra-chroot http://dl.astralinux.ru/astra/stable/2.12_x86-64/repository</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Данная команда создаст chroot-окружение ОС Astra Linux “Орёл”.</p>
+</section>
+<section id="настройка-chroot-окружения" class="level2">
+<h2 class="anchored" data-anchor-id="настройка-chroot-окружения">Настройка chroot-окружения</h2>
+<p>Настройка созданного образа осуществляется посредством входа в chroot-окружение с помощью команды chroot:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">chroot</span> /var/astra-chroot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Сгенериурем локали:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"ru_RU.UTF-8 UTF-8"</span> <span class="op">&gt;&gt;</span> /etc/locale.gen</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"en_US.UTF-8 UTF-8"</span> <span class="op">&gt;&gt;</span> /etc/locale.gen</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">locale-gen</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="ex">update-locale</span> ru_RU.UTF-8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Хорошим тоном при создании образов Docker является максимальное уменьшение его размера. Очистка кэша apt наиболее значительно уменьшает размеры итогового образа и не влияет на функциональность образа:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> update</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> /etc/apt/sources.list.bak /etc/apt/sources.list</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">apt-get</span> autoclean</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> clean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="создание-образа-docker" class="level2">
+<h2 class="anchored" data-anchor-id="создание-образа-docker">Создание образа Docker</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tar</span> <span class="at">-C</span> /var/astra-chroot <span class="at">-cpf</span> <span class="at">-</span> . <span class="kw">|</span><span class="ex">docker</span> import<span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">-</span> astralinux:orel<span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--change</span> <span class="st">"ENV PATH /usr/local/sbin:/usr/local/bin</span><span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">    :/usr/sbin:/usr/bin:/sbin:/bin"</span><span class="dt">\</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">--change</span> <span class="st">'CMD ["/bin/bash"]'</span><span class="dt">\</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">--change</span> <span class="st">"ENV LANG=ru_RU.UTF-8"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>В результате будет создан образ с российской локализацией и точкой входа в bash. Итоговый размер образа – 204 мегабайта.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
