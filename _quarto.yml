@@ -8,10 +8,10 @@ website:
       - href: index.qmd
         text: Домашняя страница
       - about.qmd
-
+  
 format:
   html:
     theme: darkly
     css: styles.css
     toc: false
-
+    lang: ru
