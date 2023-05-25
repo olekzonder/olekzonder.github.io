@@ -14,4 +14,7 @@ listing:
     - "date"
     - "title desc"
     fields: [date, title]
+    categories: true
+    filter-ui: true
+    sort-ui: true
 ---

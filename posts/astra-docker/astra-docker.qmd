@@ -1,9 +1,8 @@
 ---
 title: "Создание Docker образа Astra Linux "
 author: Александр Смирнов
+categories: [devops, docker]
 ---
-
-![](astra-docker/logo.png)
 
 Образ дистрибутива Astra Linux, как и любого дистрибутива, основанного на Debian, создаётся в три этапа:
 
