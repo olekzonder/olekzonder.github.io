@@ -1,7 +1,32 @@
 ---
-title: "Github Workflow"
+title: "Как осилить Github Actions?"
 author: Александр Смирнов
-categories: [новости, ci/cd]
+categories: [новости, quarto]
 ---
 
-Я осилил Github Workflow. Ура!!!
+Я осилил Github Actions. А ты?
+
+## Как осилить?
+
+1. Скачиваем файл [отсюда](https://raw.githubusercontent.com/quarto-dev/quarto-actions/main/examples/quarto-publish-example.yml) и закидываем его в репозиторий как .github/workflows/quarto-publish.yml
+
+2. Внутри файла меняем название репозитория на тот, где находятся файлы с .qmd-файлами. В моём случае это так:
+
+```yaml
+on:
+  push:
+    branches: master
+```
+
+3. Раскомменчиваем пункт с Github Pages
+
+4. Запускаем quarto publish gh-pages
+
+5. Коммитим изменения в репозиторий (master/main)
+
+6. Внутри Github выставляем разрешение боту на запись и чтение репозитория
+
+7. Ставим страницу в Pages на gh-pages
+
+Готово!
+
