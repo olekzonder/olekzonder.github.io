@@ -1,6 +1,5 @@
 project:
   type: website
-  output-dir: /home/olekzonder/Код/olekzonder.github.io
 website:
   title: "Александр Смирнов"
   navbar:
