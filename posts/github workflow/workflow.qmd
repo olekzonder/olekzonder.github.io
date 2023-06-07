@@ -1,0 +1,7 @@
+---
+title: "Github Workflow"
+author: Александр Смирнов
+categories: [новости]
+---
+
+Я осилил Github Workflow
