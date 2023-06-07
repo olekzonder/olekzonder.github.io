@@ -1,0 +1,60 @@
+---
+title: "Создание Docker образа Astra Linux "
+author: Александр Смирнов
+categories: [devops, docker]
+---
+
+Образ дистрибутива Astra Linux, как и любого дистрибутива, основанного на Debian, создаётся в три этапа:
+
+1)Выполняется сборка chroot-окружения с помощью debootstrap;
+
+2)Выполняется настройка chroot-окружения;
+
+3)Полученное chroot-окружение конвертируется в образ Docker.
+
+## Сборка chroot-окружения
+
+Сборка производится с помощью команды debootstrap:
+
+```bash
+debootstrap --variant=minbase --include locales,lsb-release --components=main,contrib,non-free orel /var/astra-chroot http://dl.astralinux.ru/astra/stable/2.12_x86-64/repository
+```
+
+Данная команда создаст chroot-окружение ОС Astra Linux "Орёл".
+
+## Настройка chroot-окружения
+
+Настройка созданного образа осуществляется посредством входа в chroot-окружение с помощью команды chroot:
+
+```bash
+chroot /var/astra-chroot
+```
+Сгенериурем локали:
+
+```bash
+echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen
+echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+locale-gen
+update-locale ru_RU.UTF-8
+```
+Хорошим тоном при создании образов Docker является максимальное уменьшение его размера. Очистка кэша apt наиболее значительно уменьшает размеры итогового образа и не влияет на функциональность образа:
+
+```bash
+apt update
+mv /etc/apt/sources.list.bak /etc/apt/sources.list
+apt-get autoclean
+apt clean
+```
+
+## Создание образа Docker
+
+```bash
+tar -C /var/astra-chroot -cpf - . |docker import\
+    - astralinux:orel\
+    --change "ENV PATH /usr/local/sbin:/usr/local/bin\
+    :/usr/sbin:/usr/bin:/sbin:/bin"\
+    --change 'CMD ["/bin/bash"]'\
+    --change "ENV LANG=ru_RU.UTF-8"
+```
+
+В результате будет создан образ с российской локализацией и точкой входа в bash. Итоговый размер образа -- 204 мегабайта.

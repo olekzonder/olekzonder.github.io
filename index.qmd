@@ -1,0 +1,20 @@
+---
+title: "olekzonder"
+---
+
+Привет, мир!
+
+# Статьи
+
+---
+listing:
+    contents: posts
+    type: grid
+    sort: 
+    - "date"
+    - "title desc"
+    fields: [date, title]
+    categories: true
+    filter-ui: false
+    sort-ui: true
+---

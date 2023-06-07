@@ -1,0 +1,17 @@
+project:
+  type: website
+  output-dir: /home/olekzonder/Код/olekzonder.github.io
+website:
+  title: "Александр Смирнов"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Домашняя страница
+      - about.qmd
+  
+format:
+  html:
+    theme: darkly
+    css: styles.css
+    toc: false
+    lang: ru
