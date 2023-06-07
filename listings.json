@@ -3,8 +3,8 @@
     "listing": "/index.html",
     "items": [
       "/posts/astra-docker/astra-docker.html",
-      "/posts/phdays/phdays.html",
-      "/posts/github workflow/workflow.html"
+      "/posts/github workflow/workflow.html",
+      "/posts/phdays/phdays.html"
     ]
   }
 ]

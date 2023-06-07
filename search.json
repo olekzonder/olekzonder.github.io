@@ -2,9 +2,16 @@
   {
     "objectID": "posts/github workflow/workflow.html",
     "href": "posts/github workflow/workflow.html",
-    "title": "Github Workflow",
+    "title": "Как осилить Github Actions?",
     "section": "",
-    "text": "Я осилил Github Workflow. Ура!!!"
+    "text": "Я осилил Github Actions. А ты?"
+  },
+  {
+    "objectID": "posts/github workflow/workflow.html#как-осилить",
+    "href": "posts/github workflow/workflow.html#как-осилить",
+    "title": "Как осилить Github Actions?",
+    "section": "Как осилить?",
+    "text": "Как осилить?\n\nСкачиваем файл отсюда и закидываем его в репозиторий как .github/workflows/quarto-publish.yml\nВнутри файла меняем название репозитория на тот, где находятся файлы с .qmd-файлами. В моём случае это так:\n\non:\n  push:\n    branches: master\n\nРаскомменчиваем пункт с Github Pages\nЗапускаем quarto publish gh-pages\nКоммитим изменения в репозиторий (master/main)\nВнутри Github выставляем разрешение боту на запись и чтение репозитория\nСтавим страницу в Pages на gh-pages\n\nГотово!"
   },
   {
     "objectID": "posts/astra-docker/astra-docker.html",
@@ -46,7 +53,7 @@
     "href": "index.html",
     "title": "olekzonder",
     "section": "",
-    "text": "Привет, мир! Я новенький\n\nСтатьи\n\n\n\n\n\n\n\n   \n     \n     \n       Сортировать по\n       предварительно выбранный\n         \n          Заголовок\n        \n         \n          Дата - Самый старый\n        \n         \n          Дата - Новейшие\n        \n     \n  \n\n\n\n\n\n\n\nСоздание Docker образа Astra Linux\n\n\n\n\n\n\n\n\n\n\nPHDays 12\n\n\n\n\n\n\n\n\n\n\nGithub Workflow\n\n\n\n\n\n\n\nНет подходящих элементов"
+    "text": "Привет, мир!\n\nСтатьи\n\n\n\n\n\n\n\n   \n     \n     \n       Сортировать по\n       предварительно выбранный\n         \n          Заголовок\n        \n         \n          Дата - Самый старый\n        \n         \n          Дата - Новейшие\n        \n     \n  \n\n\n\n\n\n\n\nСоздание Docker образа Astra Linux\n\n\n\n\n\n\n\n\n\n\nКак осилить Github Actions?\n\n\n\n\n\n\n\n\n\n\nPHDays 12\n\n\n\n\n\n\n\nНет подходящих элементов"
   },
   {
     "objectID": "about.html",
