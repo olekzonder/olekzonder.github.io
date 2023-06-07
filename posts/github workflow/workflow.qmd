@@ -4,4 +4,4 @@ author: Александр Смирнов
 categories: [новости]
 ---
 
-Я осилил Github Workflow
+Я осилил Github Workflow. Ура!
