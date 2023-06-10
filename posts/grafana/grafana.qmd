@@ -1,0 +1,89 @@
+---
+title: "Развёртывание стека Node-Exporter+Prometheus+Grafana"
+author: Александр Смирнов
+categories: [devops]
+---
+
+## Развертывание стека
+
+Развертывание стека можно осуществить с помощью Docker. Для этого можно
+составить docker-compose file.
+
+## Node-Exporter
+
+```yml
+    version: "3.9"
+    services:
+        node-exporter:
+        image: prom/node-exporter:latest
+        container_name: node-exporter
+        restart: unless-stopped
+        volumes:
+        - /proc:/host/proc:ro
+        - /sys:/host/sys:ro
+        - /:/roofs:ro
+        command:
+        - '--path.procfs=/host/proc'
+        - '--path.rootfs=/rootfs'
+        - '--path.sysfs=/host/sys'
+        - '--collector.filesystem.mount-points-exclude=^/(sys|proc|
+          dev|host|etc)($$|/)'
+        ports:
+        - "9100:9100"
+
+```
+Сервису Node-Exporter был дан доступ к корневому каталогу системы только
+на чтение, также был дан доступ к каталогу /sys для получения параметров
+ядра Linux и /proc для получения информации о процессах и системе в
+целом. Для возможности подключиться к сервису был проброшен порт 9100.
+
+## Prometheus и Grafana
+```yml
+        prometheus:
+        container_name: prometheus
+        image: prom/prometheus:latest
+        volumes:
+          - ./prometheus.yml:/etc/prometheus/prometheus.yml
+          - prometheus-data:/prometheus
+        command:
+          - '--config.file=/etc/prometheus/prometheus.yml'
+        ports:
+          - 9090:9090
+      grafana:
+        container_name: grafana
+        image: grafana/grafana:latest
+        user: "0"
+        ports:
+        - "3000:3000"
+        volumes:
+        - grafana-data:/var/lib/grafana
+    volumes:
+        grafana-data:
+        prometheus-data:
+```
+
+Для сервисов Prometheus и Grafana были проброшены порты 9090 и 3000
+соответственно. Также для этих сервисов были созданы Docker Volume. Для
+работы Prometheus требуется файл конфигурации prometheus.yml.
+
+## Prometheus.yml
+```yml
+    global:
+    scrape_interval: 15s
+    evaluation_interval: 15s
+
+    scrape_configs:
+    - job_name: "node_exporter"
+    scrape_interval: 15s
+    static_configs:
+    - targets: ["node-exporter:9100"]
+```
+
+Каждые 15 секунд сервис Prometheus будет отправлять информацию на сервис
+Node-Exporter. Стоит обратить внимание, что обращение к нему проводится
+не по IP-адресу, а по названию сервиса. Запустим получившийся
+docker-compose file:
+
+```bash
+docker-compose up -d
+```

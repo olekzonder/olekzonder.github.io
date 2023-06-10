@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "olekzonder",
+    "section": "",
+    "text": "Привет, мир!\n\nСтатьи\n\n\n\n\n\n\n\n   \n     \n     \n       Сортировать по\n       предварительно выбранный\n         \n          Заголовок\n        \n         \n          Дата - Самый старый\n        \n         \n          Дата - Новейшие\n        \n     \n  \n\n\n\n\n\n\n\nСоздание Docker образа Astra Linux\n\n\n\n\n\n\n\n\n\n\nPHDays 12\n\n\n\n\n\n\n\n\n\n\nGithub Workflow\n\n\n\n\n\n\n\nНет подходящих элементов"
+  },
+  {
+    "objectID": "posts/phdays/phdays.html",
+    "href": "posts/phdays/phdays.html",
+    "title": "PHDays 12",
+    "section": "",
+    "text": "Компания Positive Technologies, лидер в области результативной кибербезопасности, проводит Positive Hack Days уже в 12-й раз. В этом году мероприятие впервые проходит в одном из самых популярных парков Москвы — Парке Горького — и предназначено не только для профессионального сообщества, но и для широкой аудитории. В условиях повсеместной цифровизации кибербезопасность касается каждого человека, и PHDays предлагает ближе познакомиться с новыми технологиями, научиться их контролировать и избегать киберугроз.\nВ Парке Горького построен настоящий кибергород, любой посетитель которого может совершенно бесплатно поучаствовать в квестах и в итоге получить знания о киберзащищенности. Во второй масштабной локации — на территории безопасности, располагающейся на набережной и объединяющей пять технических треков и бизнес-программу, — уже прошли десятки профессиональных выступлений (всего их будет более 200). В пленарной сессии принял участие министр цифрового развития, связи и массовых коммуникаций Максут Шадаев.\nКиберфестиваль продолжается, впереди самое интересное, а пока представляем краткий дайджест событий первого дня. За выступлениями и соревнованиями также можно наблюдать онлайн на сайте PHDays.\nОткрыл мероприятие Денис Баранов, генеральный директор Positive Technologies:\n\nВ России есть огромная и развитая сфера IT: люди пользуются цифровыми банками и вызывают такси со смартфона. Рядом с ней есть отрасль кибербезопасности — высокотехнологичная, очень интересная, со своими вызовами. Хакеры чуть ли не ежедневно атакуют компании, пользователей, поезда, заводы, и героические ребята с другой стороны баррикад защищают цифровые системы для того, чтобы современная цивилизация не была уничтожена. Мы решили выйти в Парк Горького, чтобы немного поделиться кулуарным миром ИБ, а пользователи, далекие от этой сферы, могли, как в щелочку, на него посмотреть. –  Денис Баранов"
+  },
+  {
+    "objectID": "posts/astra-docker/astra-docker.html",
+    "href": "posts/astra-docker/astra-docker.html",
+    "title": "Создание Docker образа Astra Linux",
+    "section": "",
+    "text": "Образ дистрибутива Astra Linux, как и любого дистрибутива, основанного на Debian, создаётся в три этапа:\n1)Выполняется сборка chroot-окружения с помощью debootstrap;\n2)Выполняется настройка chroot-окружения;\n3)Полученное chroot-окружение конвертируется в образ Docker."
+  },
+  {
+    "objectID": "posts/astra-docker/astra-docker.html#сборка-chroot-окружения",
+    "href": "posts/astra-docker/astra-docker.html#сборка-chroot-окружения",
+    "title": "Создание Docker образа Astra Linux",
+    "section": "Сборка chroot-окружения",
+    "text": "Сборка chroot-окружения\nСборка производится с помощью команды debootstrap:\ndebootstrap --variant=minbase --include locales,lsb-release --components=main,contrib,non-free orel /var/astra-chroot http://dl.astralinux.ru/astra/stable/2.12_x86-64/repository\nДанная команда создаст chroot-окружение ОС Astra Linux “Орёл”."
+  },
+  {
+    "objectID": "posts/astra-docker/astra-docker.html#настройка-chroot-окружения",
+    "href": "posts/astra-docker/astra-docker.html#настройка-chroot-окружения",
+    "title": "Создание Docker образа Astra Linux",
+    "section": "Настройка chroot-окружения",
+    "text": "Настройка chroot-окружения\nНастройка созданного образа осуществляется посредством входа в chroot-окружение с помощью команды chroot:\nchroot /var/astra-chroot\nСгенериурем локали:\necho \"ru_RU.UTF-8 UTF-8\" &gt;&gt; /etc/locale.gen\necho \"en_US.UTF-8 UTF-8\" &gt;&gt; /etc/locale.gen\nlocale-gen\nupdate-locale ru_RU.UTF-8\nХорошим тоном при создании образов Docker является максимальное уменьшение его размера. Очистка кэша apt наиболее значительно уменьшает размеры итогового образа и не влияет на функциональность образа:\napt update\nmv /etc/apt/sources.list.bak /etc/apt/sources.list\napt-get autoclean\napt clean"
+  },
+  {
+    "objectID": "posts/astra-docker/astra-docker.html#создание-образа-docker",
+    "href": "posts/astra-docker/astra-docker.html#создание-образа-docker",
+    "title": "Создание Docker образа Astra Linux",
+    "section": "Создание образа Docker",
+    "text": "Создание образа Docker\ntar -C /var/astra-chroot -cpf - . |docker import\\\n    - astralinux:orel\\\n    --change \"ENV PATH /usr/local/sbin:/usr/local/bin\\\n    :/usr/sbin:/usr/bin:/sbin:/bin\"\\\n    --change 'CMD [\"/bin/bash\"]'\\\n    --change \"ENV LANG=ru_RU.UTF-8\"\nВ результате будет создан образ с российской локализацией и точкой входа в bash. Итоговый размер образа – 204 мегабайта."
+  },
+  {
+    "objectID": "posts/github workflow/workflow.html",
+    "href": "posts/github workflow/workflow.html",
+    "title": "Github Workflow",
+    "section": "",
+    "text": "Я осилил Github Workflow. Ура!!!"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Обо мне",
+    "section": "",
+    "text": "Родился на улице Герцена, в гастрономе номер двадцать два. Известный экономист, по призванию своему библиотекарь, в народе - колхозник, в магазине - продавец, в экономике, так сказать, необходим. Это, так сказать, система. В составе ста двадцати единиц…"
+  },
+  {
+    "objectID": "about.html#образование",
+    "href": "about.html#образование",
+    "title": "Обо мне",
+    "section": "Образование",
+    "text": "Образование\nРТУ МИРЭА (2020-2026) – направление 10.05.04 (Информационно-аналитические системы безопасности)"
+  },
+  {
+    "objectID": "about.html#языки-программирования",
+    "href": "about.html#языки-программирования",
+    "title": "Обо мне",
+    "section": "Языки программирования",
+    "text": "Языки программирования\nPython, Go, C++"
+  },
+  {
+    "objectID": "about.html#стек-технологий",
+    "href": "about.html#стек-технологий",
+    "title": "Обо мне",
+    "section": "Стек технологий",
+    "text": "Стек технологий\nLaTeX, Docker, Kubernetes, *nix, Ansible"
+  }
+]
