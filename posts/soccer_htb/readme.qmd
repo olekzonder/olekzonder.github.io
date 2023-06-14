@@ -1,10 +1,6 @@
 ---
 title: "Writeup машины Soccer"
 author: Александр Смирнов, Сармат Скаев, Максим Тыван
-format: 
-    md:
-        output-file: README.md
-engine: knitr
 ---
 
 ![](./media/0.png)
