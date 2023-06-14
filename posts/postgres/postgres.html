@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Александр Смирнов">
 
-<title>Александр Смирнов - Развёртывание стека Node-Exporter+Prometheus+Grafana</title>
+<title>Как перестать быть папуасом? – postgres</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +64,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="../../styles.css">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -73,7 +72,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
     <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Александр Смирнов</span>
+    <span class="navbar-title">Как перестать быть папуасом?</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Поиск"></div>
@@ -84,7 +83,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../index.html" rel="" target="">
- <span class="menu-text">Домашняя страница</span></a>
+ <span class="menu-text">Посты</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../about.html" rel="" target="">
@@ -101,38 +100,150 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Содержание</h2>
+   
+  <ul>
+  <li><a href="#задание" id="toc-задание" class="nav-link active" data-scroll-target="#задание">Задание</a></li>
+  <li><a href="#установка-postgresql" id="toc-установка-postgresql" class="nav-link" data-scroll-target="#установка-postgresql">Установка PostgreSQL</a></li>
+  <li><a href="#работа-с-postgresql" id="toc-работа-с-postgresql" class="nav-link" data-scroll-target="#работа-с-postgresql">Работа с PostgreSQL</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Развёртывание стека Node-Exporter+Prometheus+Grafana</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">devops</div>
-  </div>
-  </div>
 
 
+<section id="задание" class="level2">
+<h2 class="anchored" data-anchor-id="задание">Задание</h2>
+<p>Необходимо развернуть PostgreSQL версии не ниже 12, создать базу данных из четырёх столбцов произвольного названия и наполнить произвольными тестовыми данными, не менее 10-ти значений.</p>
+</section>
+<section id="установка-postgresql" class="level2">
+<h2 class="anchored" data-anchor-id="установка-postgresql">Установка PostgreSQL</h2>
+<p>Debian включает PostgreSQL в свои репозитории по умолчанию. Следующая команда установит PostgreSQL версии 15:</p>
+<pre><code>$ sudo apt install postgresql-15</code></pre>
+<p>После установки следует запустить сервис, используя systemctl:</p>
+<pre><code>$ sudo systemctl start postgresql
+$ sudo systemctl status postgresql</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="media/1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">image</figcaption>
+</figure>
+</div>
+<p>Следующим этапом будет создание базы данных и заполенение её тестовыми данными.</p>
+</section>
+<section id="работа-с-postgresql" class="level2">
+<h2 class="anchored" data-anchor-id="работа-с-postgresql">Работа с PostgreSQL</h2>
+<p>При установке СУБД PostgreSQL в операционной системе автоматически создаётся пользователь postgres, наделённый правами администратора базы данных. Используя команду sudo, можно получить возможность получить доступ к командной оболочке (с помощью ключа -i) от имени данного пользователя (ключ -u):</p>
+<pre><code>$ sudo -iu postgres</code></pre>
+<p>Следующим шагом является запуск консоли Postgres:</p>
+<pre><code>$ psql</code></pre>
+<p>Далее для удобства была создана схема devops, в которой и будут дальше создаваться таблицы:</p>
+<pre><code>postgres=# CREATE SCHEMA devops;</code></pre>
+<p>В созданной схеме создадим отношение “Автор” с атрибутами: идентификатор (первичный ключ), ФИО, страна рождения, дата рождения:</p>
+<pre><code>postgres=# CREATE TABLE devops.author(
+    id SERIAL PRIMARY KEY,
+    fio VARCHAR NOT NULL,
+    country VARCHAR NOT NULL,
+    dob DATE NOT NULL);</code></pre>
+<p>Заполним таблицу данными:</p>
+<pre><code>postgres=# INSERT INTO devops.author(fio,country,dob) VALUES
+('Александр Сергеевич Пушкин', 'Россия', '1799-06-06'),
+('Лев Николаевич Толстой', 'Россия', '1828-09-09');    </code></pre>
+<p>Проверим результат:</p>
+<pre><code>postgres=# SELECT * FROM devops.author;
+    id |            fio             | country |    dob     
+   ----+----------------------------+---------+------------
+     1 | Александр Сергеевич Пушкин | Россия  | 1799-06-06
+     2 | Лев Николаевич Толстой     | Россия  | 1828-09-09
+   (2 строки)   </code></pre>
+<p>Создадим отношение “Издательство” с атрибутами: идентификатор (первичный ключ), название, город:</p>
+<pre><code>postgres=# CREATE TABLE devops.izd(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    city VARCHAR NOT NULL);</code></pre>
+<p>Заполним таблицу данными:</p>
+<pre><code>postgres=# INSERT INTO devops.izd(name,city) VALUES
+('Мир','Москва'),
+('Питер','Санкт-Петербург'),
+('АСТ','Москва');</code></pre>
+<p>Проверим результат:</p>
+<pre><code>postgres=# SELECT * FROM devops.izd;
+id | name  |      city       
+----+-------+-----------------
+  1 | Мир   | Москва
+  2 | Питер | Санкт-Петербург
+  3 | АСТ   | Москва
+(3 строки)</code></pre>
+<p>Создадим отношение “Книга” с атрибутами: идентификатор (первичный ключ), идентификатор автора (внешний ключ в отношение “Автор” ), название, идентификатор издателя (внешний ключ в отношение “Издатель”), дата издания, номер издания (если есть):</p>
+<pre><code>postgres=# CREATE TABLE devops.book(
+    id SERIAL PRIMARY KEY,
+    author_id INTEGER NOT NULL,
+    CONSTRAINT fk_book_author
+    FOREIGN KEY(author_id)
+    REFERENCES devops.author(id),
+    name VARCHAR NOT NULL,
+    izd_id SERIAL,
+    CONSTRAINT fk_book_izd
+    FOREIGN KEY(izd_id)
+    REFERENCES devops.izd(id),
+    izd_num INTEGER);</code></pre>
+<p>Наполним таблицу данными:</p>
+<pre><code>postgres=# INSERT INTO
+devops.book(author_id, name, izd_id, izd_num)
+    VALUES
+    (1, 'Евгений Онегин', 1, NULL),
+    (2, 'Война и Мир', 3, NULL),
+    (2, 'Воскресенье', 2, NULL),
+    (1, 'Капитанская дочка',1,NULL),             
+    (1, 'Сочинения А.С. Пушкина', 2, 3);</code></pre>
+<p>Проверим результат:</p>
+<pre><code>postgres=# SELECT * FROM devops.book;
+id | author_id |          name          | izd_id | izd_num 
+----+-----------+------------------------+--------+---------
+1 |         1 | Евгений Онегин         |      1 |        
+2 |         2 | Война и Мир            |      3 |        
+3 |         2 | Воскресенье            |      2 |        
+4 |         1 | Капитанская дочка      |      1 |        
+5 |         1 | Сочинения А.С. Пушкина |      2 |       3 </code></pre>
+<p>Создадим отношение “Наличие книг в магазине” с атрибутами: идентификатор (первичный ключ), идентификатор книги (внешний ключ в отношение “Книга”), цена, наличие в магазине:</p>
+<pre><code>postgres= #CREATE TABLE devops.shop(
+    id SERIAL PRIMARY KEY,
+    book_id INTEGER NOT NULL,
+    CONSTRAINT fk_shop_book
+    FOREIGN KEY(book_id)
+    REFERENCES devops.book(id),
+    price INTEGER NOT NULL,
+    available BOOLEAN NOT NULL);</code></pre>
+<p>Заполним таблицу значениями:</p>
+<pre><code>postgres=# INSERT INTO
+ devops.shop(book_id, price, available) VALUES
+(1, 300, TRUE),
+(2, 450, FALSE),
+(3, 120, TRUE),
+(4,80, TRUE),
+(6,650, TRUE);</code></pre>
+<p>Проверим результат:</p>
+<pre><code>postgres=# SELECT sh.id, b.name,
+ price, available FROM devops.shop sh  
+JOIN devops.book b on sh.book_id=b.id;
+    id |          name          | price | available 
+----+------------------------+-------+-----------
+    1 | Евгений Онегин         |   300 | t
+    2 | Война и Мир            |   450 | f
+    3 | Воскресенье            |   120 | t
+    4 | Капитанская дочка      |    80 | t
+    5 | Сочинения А.С. Пушкина |   650 | t
+(5 строк)    </code></pre>
+<p>Сделаем дамп схемы devops, отображённый в приложении А – резервная копия базы данных:</p>
+<pre><code>$ sudo -u postgres pg_dump -d postgres -n devops &gt; dump.sql </code></pre>
+<p>Таким образом, была создана база данных с четырьмя таблицами, заполненными тестовыми данными.</p>
 
-<div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Автор</div>
-    <div class="quarto-title-meta-contents">
-             <p>Александр Смирнов </p>
-          </div>
-  </div>
-    
-  
-    
-  </div>
-  
-
-</header>
-
-
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

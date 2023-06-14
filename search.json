@@ -46,7 +46,42 @@
     "href": "posts/grafana/grafana.html#prometheus.yml",
     "title": "Развёртывание стека Node-Exporter+Prometheus+Grafana",
     "section": "Prometheus.yml",
-    "text": "Prometheus.yml\n    global:\n    scrape_interval: 15s\n    evaluation_interval: 15s\n\n    scrape_configs:\n    - job_name: \"node_exporter\"\n    scrape_interval: 15s\n    static_configs:\n    - targets: [\"node-exporter:9100\"]\nКаждые 15 секунд сервис Prometheus будет отправлять информацию на сервис Node-Exporter. Стоит обратить внимание, что обращение к нему проводится не по IP-адресу, а по названию сервиса. Запустим получившийся docker-compose file:\ndocker-compose up -d"
+    "text": "Prometheus.yml\n    global:\n    scrape_interval: 15s\n    evaluation_interval: 15s\n\n    scrape_configs:\n    - job_name: \"node_exporter\"\n    scrape_interval: 15s\n    static_configs:\n    - targets: [\"node-exporter:9100\"]\nКаждые 15 секунд сервис Prometheus будет отправлять информацию на сервис Node-Exporter. Стоит обратить внимание, что обращение к нему проводится не по IP-адресу, а по названию сервиса. Запустим получившийся docker-compose file:\ndocker-compose up -d\n\n\n\nimage"
+  },
+  {
+    "objectID": "posts/grafana/grafana.html#настройка-grafana",
+    "href": "posts/grafana/grafana.html#настройка-grafana",
+    "title": "Развёртывание стека Node-Exporter+Prometheus+Grafana",
+    "section": "Настройка Grafana",
+    "text": "Настройка Grafana\nПерейдём в дэшборд Grafana (127.0.0.1:3000). При входе необходимо ввести логин и пароль (по умолчанию логин: admin, пароль: admin)\n\n\n\nimage\n\n\nИмпортируем Prometheus как источник данных:\n\n\n\nimage\n\n\nКак адрес можно указать название сервиса (в данном случае – prometheus). Следующим шагом является создание Dashboard. Был выбран дэшборд Node Exporter Full (Grafana ID - 1860):\n\n\n\nimage\n\n\nОткроем дэшборд:\n\n\n\nimage\n\n\nТаким образом, был успешно развёрнут стек Prometheus+Grafana+Node Exporter с помощью программного обеспечения для автоматизации и развёртывания приложений Docker."
+  },
+  {
+    "objectID": "posts/postgres/postgres.html",
+    "href": "posts/postgres/postgres.html",
+    "title": "Как перестать быть папуасом?",
+    "section": "",
+    "text": "Необходимо развернуть PostgreSQL версии не ниже 12, создать базу данных из четырёх столбцов произвольного названия и наполнить произвольными тестовыми данными, не менее 10-ти значений."
+  },
+  {
+    "objectID": "posts/postgres/postgres.html#задание",
+    "href": "posts/postgres/postgres.html#задание",
+    "title": "Как перестать быть папуасом?",
+    "section": "",
+    "text": "Необходимо развернуть PostgreSQL версии не ниже 12, создать базу данных из четырёх столбцов произвольного названия и наполнить произвольными тестовыми данными, не менее 10-ти значений."
+  },
+  {
+    "objectID": "posts/postgres/postgres.html#установка-postgresql",
+    "href": "posts/postgres/postgres.html#установка-postgresql",
+    "title": "Как перестать быть папуасом?",
+    "section": "Установка PostgreSQL",
+    "text": "Установка PostgreSQL\nDebian включает PostgreSQL в свои репозитории по умолчанию. Следующая команда установит PostgreSQL версии 15:\n$ sudo apt install postgresql-15\nПосле установки следует запустить сервис, используя systemctl:\n$ sudo systemctl start postgresql\n$ sudo systemctl status postgresql\n\n\n\nimage\n\n\nСледующим этапом будет создание базы данных и заполенение её тестовыми данными."
+  },
+  {
+    "objectID": "posts/postgres/postgres.html#работа-с-postgresql",
+    "href": "posts/postgres/postgres.html#работа-с-postgresql",
+    "title": "Как перестать быть папуасом?",
+    "section": "Работа с PostgreSQL",
+    "text": "Работа с PostgreSQL\nПри установке СУБД PostgreSQL в операционной системе автоматически создаётся пользователь postgres, наделённый правами администратора базы данных. Используя команду sudo, можно получить возможность получить доступ к командной оболочке (с помощью ключа -i) от имени данного пользователя (ключ -u):\n$ sudo -iu postgres\nСледующим шагом является запуск консоли Postgres:\n$ psql\nДалее для удобства была создана схема devops, в которой и будут дальше создаваться таблицы:\npostgres=# CREATE SCHEMA devops;\nВ созданной схеме создадим отношение “Автор” с атрибутами: идентификатор (первичный ключ), ФИО, страна рождения, дата рождения:\npostgres=# CREATE TABLE devops.author(\n    id SERIAL PRIMARY KEY,\n    fio VARCHAR NOT NULL,\n    country VARCHAR NOT NULL,\n    dob DATE NOT NULL);\nЗаполним таблицу данными:\npostgres=# INSERT INTO devops.author(fio,country,dob) VALUES\n('Александр Сергеевич Пушкин', 'Россия', '1799-06-06'),\n('Лев Николаевич Толстой', 'Россия', '1828-09-09');    \nПроверим результат:\npostgres=# SELECT * FROM devops.author;\n    id |            fio             | country |    dob     \n   ----+----------------------------+---------+------------\n     1 | Александр Сергеевич Пушкин | Россия  | 1799-06-06\n     2 | Лев Николаевич Толстой     | Россия  | 1828-09-09\n   (2 строки)   \nСоздадим отношение “Издательство” с атрибутами: идентификатор (первичный ключ), название, город:\npostgres=# CREATE TABLE devops.izd(\n    id SERIAL PRIMARY KEY,\n    name VARCHAR NOT NULL,\n    city VARCHAR NOT NULL);\nЗаполним таблицу данными:\npostgres=# INSERT INTO devops.izd(name,city) VALUES\n('Мир','Москва'),\n('Питер','Санкт-Петербург'),\n('АСТ','Москва');\nПроверим результат:\npostgres=# SELECT * FROM devops.izd;\nid | name  |      city       \n----+-------+-----------------\n  1 | Мир   | Москва\n  2 | Питер | Санкт-Петербург\n  3 | АСТ   | Москва\n(3 строки)\nСоздадим отношение “Книга” с атрибутами: идентификатор (первичный ключ), идентификатор автора (внешний ключ в отношение “Автор” ), название, идентификатор издателя (внешний ключ в отношение “Издатель”), дата издания, номер издания (если есть):\npostgres=# CREATE TABLE devops.book(\n    id SERIAL PRIMARY KEY,\n    author_id INTEGER NOT NULL,\n    CONSTRAINT fk_book_author\n    FOREIGN KEY(author_id)\n    REFERENCES devops.author(id),\n    name VARCHAR NOT NULL,\n    izd_id SERIAL,\n    CONSTRAINT fk_book_izd\n    FOREIGN KEY(izd_id)\n    REFERENCES devops.izd(id),\n    izd_num INTEGER);\nНаполним таблицу данными:\npostgres=# INSERT INTO\ndevops.book(author_id, name, izd_id, izd_num)\n    VALUES\n    (1, 'Евгений Онегин', 1, NULL),\n    (2, 'Война и Мир', 3, NULL),\n    (2, 'Воскресенье', 2, NULL),\n    (1, 'Капитанская дочка',1,NULL),             \n    (1, 'Сочинения А.С. Пушкина', 2, 3);\nПроверим результат:\npostgres=# SELECT * FROM devops.book;\nid | author_id |          name          | izd_id | izd_num \n----+-----------+------------------------+--------+---------\n1 |         1 | Евгений Онегин         |      1 |        \n2 |         2 | Война и Мир            |      3 |        \n3 |         2 | Воскресенье            |      2 |        \n4 |         1 | Капитанская дочка      |      1 |        \n5 |         1 | Сочинения А.С. Пушкина |      2 |       3 \nСоздадим отношение “Наличие книг в магазине” с атрибутами: идентификатор (первичный ключ), идентификатор книги (внешний ключ в отношение “Книга”), цена, наличие в магазине:\npostgres= #CREATE TABLE devops.shop(\n    id SERIAL PRIMARY KEY,\n    book_id INTEGER NOT NULL,\n    CONSTRAINT fk_shop_book\n    FOREIGN KEY(book_id)\n    REFERENCES devops.book(id),\n    price INTEGER NOT NULL,\n    available BOOLEAN NOT NULL);\nЗаполним таблицу значениями:\npostgres=# INSERT INTO\n devops.shop(book_id, price, available) VALUES\n(1, 300, TRUE),\n(2, 450, FALSE),\n(3, 120, TRUE),\n(4,80, TRUE),\n(6,650, TRUE);\nПроверим результат:\npostgres=# SELECT sh.id, b.name,\n price, available FROM devops.shop sh  \nJOIN devops.book b on sh.book_id=b.id;\n    id |          name          | price | available \n----+------------------------+-------+-----------\n    1 | Евгений Онегин         |   300 | t\n    2 | Война и Мир            |   450 | f\n    3 | Воскресенье            |   120 | t\n    4 | Капитанская дочка      |    80 | t\n    5 | Сочинения А.С. Пушкина |   650 | t\n(5 строк)    \nСделаем дамп схемы devops, отображённый в приложении А – резервная копия базы данных:\n$ sudo -u postgres pg_dump -d postgres -n devops &gt; dump.sql \nТаким образом, была создана база данных с четырьмя таблицами, заполненными тестовыми данными."
   },
   {
     "objectID": "posts/soccer_htb/readme.html#ход-работы",
@@ -95,7 +130,7 @@
     "href": "index.html",
     "title": "olekzonder",
     "section": "",
-    "text": "Привет, мир!\n\nСтатьи\n\n\n\n\n\n\n\n   \n     \n     \n       Сортировать по\n       предварительно выбранный\n         \n          Заголовок\n        \n         \n          Дата - Самый старый\n        \n         \n          Дата - Новейшие\n        \n     \n  \n\n\n\n\n\n\n\nСоздание Docker образа Astra Linux\n\n\n\n\n\n\n\n\n\n\nРазвёртывание стека Node-Exporter+Prometheus+Grafana\n\n\n\n\n\n\n\n\n\n\nРазвёртывание стека Node-Exporter+Prometheus+Grafana\n\n\n\n\n\n\n\n\n\n\nРазвёртывание стека Node-Exporter+Prometheus+Grafana\n\n\n\n\n\n\n\n\n\n\nКак осилить Github Actions?\n\n\n\n\n\n\n\n\n\n\nWriteup машины Soccer\n\n\n\n\n\n\n\n\n\n\nPHDays 12\n\n\n\n\n\n\n\nНет подходящих элементов"
+    "text": "Привет, мир!\n\nСтатьи\n\n\n\n\n\n\n\n   \n     \n     \n       Сортировать по\n       предварительно выбранный\n         \n          Заголовок\n        \n         \n          Дата - Самый старый\n        \n         \n          Дата - Новейшие\n        \n     \n  \n\n\n\n\n\n\n\nСоздание Docker образа Astra Linux\n\n\n\n\n\n\n\n\n\n\nРазвёртывание стека Node-Exporter+Prometheus+Grafana\n\n\n\n\n\n\n\n\n\n\nКак осилить Github Actions?\n\n\n\n\n\n\n\n\n\n\nЗадание\n\n\n\n\n\n\n\n\n\n\nWriteup машины Soccer\n\n\n\n\n\n\n\n\n\n\nPHDays 12\n\n\n\n\n\n\n\nНет подходящих элементов"
   },
   {
     "objectID": "about.html",
