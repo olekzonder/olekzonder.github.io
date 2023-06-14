@@ -1,16 +1,16 @@
 project:
   type: website
 website:
-  title: "Александр Смирнов"
+  title: "Как перестать быть папуасом?"
   navbar:
     left:
       - href: index.qmd
-        text: Домашняя страница
+        text: Посты
       - about.qmd
   
 format:
   html:
     theme: darkly
     css: styles.css
-    toc: false
+    toc: true
     lang: ru

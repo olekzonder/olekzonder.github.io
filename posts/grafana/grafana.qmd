@@ -87,3 +87,31 @@ docker-compose file:
 ```bash
 docker-compose up -d
 ```
+
+![image](media/2.png){width="\\textwidth"}
+
+## Настройка Grafana
+
+Перейдём в дэшборд Grafana (127.0.0.1:3000). При входе необходимо ввести логин и пароль
+(по умолчанию логин: admin, пароль: admin)
+
+
+![image](media/3.png)
+
+Импортируем Prometheus как источник данных:
+
+![image](media/4.png)
+
+Как адрес можно указать название сервиса (в данном случае --
+prometheus). Следующим шагом является создание Dashboard. Был выбран
+дэшборд Node Exporter Full (Grafana ID - 1860):
+
+![image](media/5.png)
+
+Откроем дэшборд:
+
+![image](media/6.png)
+
+Таким образом, был успешно развёрнут стек Prometheus+Grafana+Node
+Exporter с помощью программного обеспечения для автоматизации и
+развёртывания приложений Docker.

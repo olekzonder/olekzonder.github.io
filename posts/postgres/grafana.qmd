@@ -1,7 +1,0 @@
----
-title: "Развёртывание стека Node-Exporter+Prometheus+Grafana"
-author: Александр Смирнов
-categories: [devops]
----
-
-
