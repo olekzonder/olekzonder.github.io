@@ -3,7 +3,11 @@
     "listing": "/index.html",
     "items": [
       "/posts/astra-docker/astra-docker.html",
+      "/posts/postgres-cluster/grafana.html",
+      "/posts/grafana/grafana.html",
+      "/posts/postgres/grafana.html",
       "/posts/github workflow/workflow.html",
+      "/posts/soccer_htb/readme.html",
       "/posts/phdays/phdays.html"
     ]
   }

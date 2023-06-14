@@ -1,1 +1,1 @@
-Sitemap: https://github.com/olekzonder/olekzonder.github.io/sitemap.xml
+Sitemap: git@github.com:olekzonder/olekzonder.github.io/sitemap.xml

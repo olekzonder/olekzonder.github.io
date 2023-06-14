@@ -2,22 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/olekzonder/olekzonder.github.io/posts/github workflow/workflow.html</loc>
-    <lastmod>2023-06-07T08:15:21.809Z</lastmod>
+    <lastmod>2023-06-14T12:07:25.888Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/olekzonder/olekzonder.github.io/posts/postgres-cluster/grafana.html</loc>
+    <lastmod>2023-06-14T12:07:27.536Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/olekzonder/olekzonder.github.io/posts/grafana/grafana.html</loc>
+    <lastmod>2023-06-14T12:07:28.152Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/olekzonder/olekzonder.github.io/posts/postgres/grafana.html</loc>
+    <lastmod>2023-06-14T12:07:28.452Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/olekzonder/olekzonder.github.io/posts/soccer_htb/readme.html</loc>
+    <lastmod>2023-06-14T12:07:29.220Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/olekzonder/olekzonder.github.io/posts/astra-docker/astra-docker.html</loc>
-    <lastmod>2023-06-07T08:15:22.501Z</lastmod>
+    <lastmod>2023-06-14T12:07:29.560Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/olekzonder/olekzonder.github.io/posts/phdays/phdays.html</loc>
-    <lastmod>2023-06-07T08:15:22.833Z</lastmod>
+    <lastmod>2023-06-14T12:07:29.892Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/olekzonder/olekzonder.github.io/index.html</loc>
-    <lastmod>2023-06-07T08:15:23.201Z</lastmod>
+    <lastmod>2023-06-14T12:07:30.316Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/olekzonder/olekzonder.github.io/about.html</loc>
-    <lastmod>2023-06-07T08:15:23.485Z</lastmod>
+    <lastmod>2023-06-14T12:07:30.612Z</lastmod>
   </url>
 </urlset>
