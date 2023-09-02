@@ -214,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Для того, чтобы создать репозиторий, необходимо открыть терминал в каталоге проекта и ввести следующую команду:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>В результате выполнения команды будет создан репозиторий Git. Чтобы убедиться, можно проверить содержимое каталога проекта:</p>
-<p>[Screenshot_20230902_101654.png]</p>
+<p>!(img1.png)</p>
 <p>Как видно из скриншота, появился скрытый каталог .git, в котором и таится репозиторий.</p>
 <p>Изначально репозиторий создаётся пустой. Изначально создаются Чтобы репозиторий стал менее пустым, добавим файлы в репозиторий и создадим первый коммит:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
@@ -224,9 +224,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="как-залить-коммит-на-github" class="level2">
 <h2 class="anchored" data-anchor-id="как-залить-коммит-на-github">Как залить коммит на Github?</h2>
 <p>Если не был создан проект на Github, то необходимо его создать:</p>
-<p>[Pasted image 20230902102155.png]</p>
+<p>!(img2.png)</p>
 <p>Далее необходимо вписать название проекта. Можно также добавить описание и настроить доступность проекта:</p>
-<p>[Screenshot_20230902_102527.png]</p>
+<p>!(img3.png)</p>
 <p>После нажатия на большую зелёную кнопку Create repository будет успешно создан проект на Github. Теперь можно подключить к нашему git-репозиторию удалённый репозиторий:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/имя_пользователя/название_проекта</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Теперь можно, наконец, запушить проект:</p>
@@ -241,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Получим публичный ключ:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.ssh/id_rsa.pub</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Теперь необходимо добавить ключ (New ssh key):</p>
-<p>[Screenshot_20230902_110500.png]</p>
+<p>!(img4.png)</p>
 <p>После добавления можно попробовать запушить ещё раз:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin master</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
