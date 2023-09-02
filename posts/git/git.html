@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -107,6 +141,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#введение" id="toc-введение" class="nav-link active" data-scroll-target="#введение">Введение</a></li>
+  <li><a href="#что-такое-проект" id="toc-что-такое-проект" class="nav-link" data-scroll-target="#что-такое-проект">Что такое проект?</a></li>
   <li><a href="#установка-и-предварительная-настройка-git" id="toc-установка-и-предварительная-настройка-git" class="nav-link" data-scroll-target="#установка-и-предварительная-настройка-git">Установка и предварительная настройка Git</a></li>
   <li><a href="#как-создать-репозиторий" id="toc-как-создать-репозиторий" class="nav-link" data-scroll-target="#как-создать-репозиторий">Как создать репозиторий?</a></li>
   <li><a href="#как-залить-коммит-на-github" id="toc-как-залить-коммит-на-github" class="nav-link" data-scroll-target="#как-залить-коммит-на-github">Как залить коммит на Github?</a></li>
@@ -145,7 +180,11 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="введение" class="level2">
 <h2 class="anchored" data-anchor-id="введение">Введение</h2>
-<p>Для начала стоит понять, что значит запушить. Запушить - значит <em>загрузить</em> код проекта на какой-то сервис для хостинга проектов. В данной статье рассматривается то, как загрузить проект на Github, используя командную строку. ## Что такое проект? Под проектом подразумевается некоторый конечный продукт. Примеры проектов (с примером названий):</p>
+<p>Для начала стоит понять, что значит запушить. Запушить - значит <em>загрузить</em> код проекта на какой-то сервис для хостинга проектов. В данной статье рассматривается то, как загрузить проект на Github, используя командную строку.</p>
+</section>
+<section id="что-такое-проект" class="level2">
+<h2 class="anchored" data-anchor-id="что-такое-проект">Что такое проект?</h2>
+<p>Под проектом подразумевается некоторый конечный продукт. Примеры проектов (с примером названий):</p>
 <ul>
 <li><p>Калькулятор (calculator)</p></li>
 <li><p>Сборник алгоритмов, написанных в процессе обучения (algorithms-synergy-2023)</p></li>
@@ -165,46 +204,46 @@ ul.task-list li input[type="checkbox"] {
 <li><p>На Windows необходимо скачать <a href="https://git-scm.com/download/win">Git</a>, установить его и запустить Git Bash</p></li>
 <li><p>На macOS (через Homebrew):</p></li>
 </ul>
-<pre><code>brew install git</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install git</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Перед тем, как приступить к работе с Git, необходимо указать имя пользователя и электронную почту:</p>
-<pre><code>git config --global user.name "Имя пользователя"
-git config --global user.email "почта"</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"Имя пользователя"</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"почта"</span></span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="как-создать-репозиторий" class="level2">
 <h2 class="anchored" data-anchor-id="как-создать-репозиторий">Как создать репозиторий?</h2>
 <p>Для того, чтобы создать репозиторий, необходимо открыть терминал в каталоге проекта и ввести следующую команду:</p>
-<pre><code>git init</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>В результате выполнения команды будет создан репозиторий Git. Чтобы убедиться, можно проверить содержимое каталога проекта:</p>
-<p>[[Screenshot_20230902_101654.png]]</p>
+<p>[Screenshot_20230902_101654.png]</p>
 <p>Как видно из скриншота, появился скрытый каталог .git, в котором и таится репозиторий.</p>
 <p>Изначально репозиторий создаётся пустой. Изначально создаются Чтобы репозиторий стал менее пустым, добавим файлы в репозиторий и создадим первый коммит:</p>
-<pre><code>git add .
-git commit -m "Мой первый коммит"</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Мой первый коммит"</span></span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Коммит в Git - это своего рода снимок состояния изменений. За счёт создания коммитов можно отслеживать, какие изменения происходили с кодом, и в случае, если они ломают проект, можно быстро их откатить.</p>
 </section>
 <section id="как-залить-коммит-на-github" class="level2">
 <h2 class="anchored" data-anchor-id="как-залить-коммит-на-github">Как залить коммит на Github?</h2>
 <p>Если не был создан проект на Github, то необходимо его создать:</p>
-<p>[[Pasted image 20230902102155.png]]</p>
+<p>[Pasted image 20230902102155.png]</p>
 <p>Далее необходимо вписать название проекта. Можно также добавить описание и настроить доступность проекта:</p>
-<p>[[Screenshot_20230902_102527.png]]</p>
+<p>[Screenshot_20230902_102527.png]</p>
 <p>После нажатия на большую зелёную кнопку Create repository будет успешно создан проект на Github. Теперь можно подключить к нашему git-репозиторию удалённый репозиторий:</p>
-<pre><code>git remote add origin https://github.com/имя_пользователя/название_проекта</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/имя_пользователя/название_проекта</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Теперь можно, наконец, запушить проект:</p>
-<pre><code>git push origin master</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin master</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="если-не-запушилось" class="level2">
 <h2 class="anchored" data-anchor-id="если-не-запушилось">Если не запушилось</h2>
 <p>Если не запушилось, то необходимо настроить подключение к Github с помощью ssh:</p>
-<pre><code>git remote set-url origin ssh://git@github.com:имя_пользователя/название_проекта.git</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote set-url origin ssh://git@github.com:имя_пользователя/название_проекта.git</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Далее необходимо создать ssh-ключи:</p>
-<pre><code>ssh-keygen -C "электронная почта"</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ssh-keygen</span> <span class="at">-C</span> <span class="st">"электронная почта"</span></span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Получим публичный ключ:</p>
-<pre><code>cat ~/.ssh/id_rsa.pub</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> ~/.ssh/id_rsa.pub</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Теперь необходимо добавить ключ (New ssh key):</p>
-<p>[[Screenshot_20230902_110500.png]]</p>
+<p>[Screenshot_20230902_110500.png]</p>
 <p>После добавления можно попробовать запушить ещё раз:</p>
-<pre><code>git push origin master</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin master</span></code><button title="Скопировать текст" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 </section>
