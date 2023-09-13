@@ -2,11 +2,11 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/postgres/postgres.html",
       "/posts/astra-docker/astra-docker.html",
       "/posts/grafana/grafana.html",
       "/posts/github workflow/workflow.html",
       "/posts/git/git.html",
-      "/posts/postgres/postgres.html",
       "/posts/soccer_htb/readme.html",
       "/posts/phdays/phdays.html"
     ]
