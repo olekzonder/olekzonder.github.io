@@ -1,7 +1,7 @@
 project:
   type: website
 website:
-  title: "Как перестать быть папуасом?"
+  title: "Блог Александра Смирнова"
   navbar:
     left:
       - href: index.qmd
